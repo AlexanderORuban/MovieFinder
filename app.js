@@ -18,7 +18,7 @@ async function connect() {
     console.log("Connected to the database");
     return conn;
   } catch (err) {
-    console.log("Error connectiong to DB: " + err);
+    console.log("Error connecting to DB: " + err);
   }
 }
 
@@ -94,6 +94,11 @@ app.get("/recommendations", async (req, res) => {
   const conn = await connect();
   const rows = await conn.query("SELECT * FROM movies");
   res.render("recommendations", { movies: rows });
+});
+
+app.get("/lookup", async (req, res) => {
+  const conn = await connect();
+  res.render("lookup");
 });
 
 // Tell the app to listen for requests on the designated port
