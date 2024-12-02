@@ -8,7 +8,7 @@
   </head>
   <body>
     <h1>Recommend a Movie!</h1>
-    <form id="movie-form" name="movie-form" action="confirm" method="POST">
+    <form id="movie-form" name="movie-form" action="success" method="POST">
       <label>
         Your name
         <input type="text" id="name" name="name" value="<%= data.name %>" />
@@ -49,9 +49,10 @@
       <button type="submit" id="submit">Submit Recommendation</button>
     </form>
     <div class="links">
-      <a href="/recommendations" class="recommendations-btn"
-        >See all recommendations</a
-      >
+      <a href="/all-recommendations" class="link-btn"> 
+        See all recommendations </a>
+      <a href="/lookup" class="link-btn">
+        Lookup Movies </a>
     </div>
   </body>
 </html>

@@ -44,7 +44,7 @@ app.get("/", (req, res) => {
   res.render("home", { data: [], errors: [] });
 });
 
-app.post("/confirm", async (req, res) => {
+app.post("/success", async (req, res) => {
   const data = req.body;
 
   let isValid = true;
@@ -87,13 +87,13 @@ app.post("/confirm", async (req, res) => {
     `INSERT INTO movies (name, movie, genre, rating, why) VALUES ('${data.name}', '${data.movie}', '${data.genre}', '${data.rating}', "${data.why}");`
   );
 
-  res.render("recommended", { details: data });
+  res.render("success", { details: data });
 });
 
-app.get("/recommendations", async (req, res) => {
+app.get("/all-recommendations", async (req, res) => {
   const conn = await connect();
   const rows = await conn.query("SELECT * FROM movies");
-  res.render("recommendations", { movies: rows });
+  res.render("all-recommendations", { movies: rows });
 });
 
 app.get("/lookup", async (req, res) => {
