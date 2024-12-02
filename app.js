@@ -97,8 +97,10 @@ app.get("/all-recommendations", async (req, res) => {
 });
 
 app.get("/lookup", async (req, res) => {
+
   const conn = await connect();
-  res.render("lookup");
+
+  res.render("lookup", {data : data});
 });
 
 app.get("/recommendations", async (req, res) => {

@@ -7,8 +7,36 @@
     <link rel="stylesheet" href="styles/lookup.css">
 </head>
 <body>
-    <form action="/lookup" method="get">
-
+    <h1>Lookup a Movie!</h1>
+    <form id="lookup-form" name="lookup-form" action="lookup", method="get">
+          <label>
+            Movie Name
+            <input type="text" id="movie" name="movie"/>
+          </label>
+          <label>
+            Genre
+            <input type="text" id="genre" name="genre"/>
+          </label>
+          <label>
+            Minimum Rating
+            <input type="text" id="min-rating" name="min-rating"/>
+          </label>
+          <label>
+            Sort by
+            <select name="sort" id="sort">
+                <option value="name">Name</option>
+                <option value="min-rating">Rating</option>
+                <option value="genre">Genre</option>
+            </select>
+          </label>
+          <% if (errors) { %>
+            <ul class="errors">
+              <% errors.forEach((error) => { %>
+              <li><%= error %></li>
+              <% }); %>
+            </ul>
+            <% } %>
+          <button type="submit" id="submit">Search</button>
     </form>
 
     <h2>Results:</h2>
