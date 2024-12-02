@@ -101,6 +101,11 @@ app.get("/lookup", async (req, res) => {
   res.render("lookup");
 });
 
+app.get("/recommendations", async (req, res) => {
+  const conn = await connect();
+  res.render("recommendations");
+})
+
 // Tell the app to listen for requests on the designated port
 app.listen(PORT, () => {
   console.log(`Server running on port http://localhost:${PORT}`);
