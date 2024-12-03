@@ -28,9 +28,6 @@ async function connect() {
 // Instantiate an express (web) app
 const app = express();
 
-// Define the port number for the app to listen on
-const PORT = 3000;
-
 // Tell the app to encode data into JSON
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -182,6 +179,6 @@ app.get("/recommendations", async (req, res) => {
 })
 
 // Start the server and listen on the specified port
-app.listen(PORT, () => {
-  console.log(`Server running on port http://localhost:${PORT}`);
+app.listen(process.env.APP_PORT, () => {
+  console.log(`Server running on port http://localhost:${process.env.APP_PORT}`);
 });
