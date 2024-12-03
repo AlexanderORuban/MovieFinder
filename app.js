@@ -10,7 +10,8 @@ const pool = mariadb.createPool({
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
-  database: process.env.DB_DATABASE
+  database: process.env.DB_DATABASE,
+  connectionLimit: 20
 });
 
 // Function to establish a connection to the database
@@ -137,32 +138,40 @@ app.post("/lookup", async (req, res) => {
   // Connecting to the database to run search queries
   const conn = await connect();
 
-  let query = "SELECT * FROM movies WHERE 1=1"; // Base query to select all movies
+  try {
+    let query = "SELECT * FROM movies WHERE 1=1"; // Base query to select all movies
 
-  // Modify query based on user input for movie, genre, and rating
-  if (data.movie) {
-    query += ` AND movie LIKE '%${data.movie}%'`;
-  }
-  if (data.genre) {
-    query += ` AND genre LIKE '%${data.genre}%'`;
-  }
-  if (data.rating) {
-    query += ` AND rating >= ${data.rating}`;
+    // Modify query based on user input for movie, genre, and rating
+    if (data.movie) {
+      query += ` AND movie LIKE '%${data.movie}%'`;
+    }
+    if (data.genre) {
+      query += ` AND genre LIKE '%${data.genre}%'`;
+    }
+    if (data.rating) {
+      query += ` AND rating >= ${data.rating}`;
+    }
+
+    // Modify query based on sorting preference
+    if (data.sort === "name") {
+      query += " ORDER BY movie ASC";
+    } else if (data.sort === "rating") {
+      query += " ORDER BY rating DESC";
+    } else if (data.sort === "genre") {
+      query += " ORDER BY genre ASC";
+    }
+
+    // Execute the query and get the results
+    results = await conn.query(query);
+  } catch (err) {
+    // If an error occurs while executing the query, log the error
+    console.error("Error executing query:", err);
+  } finally {
+    // Always release the connection back to the pool after the query is complete
+    conn.release();
   }
 
-  // Modify query based on sorting preference
-  if (data.sort === "name") {
-    query += " ORDER BY movie ASC";
-  } else if (data.sort === "rating") {
-    query += " ORDER BY rating DESC";
-  } else if (data.sort === "genre") {
-    query += " ORDER BY genre ASC";
-  }
-
-  // Execute the query and get the results
-  results = await conn.query(query);
-
-  // Render the lookup page with the results
+  // Render the lookup page with the results and any errors
   res.render("lookup", { data: data, errors: errors, results: results });
 });
 
