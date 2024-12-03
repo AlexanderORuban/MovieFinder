@@ -1,10 +1,11 @@
+// Load environment variables from the .env file
 require('dotenv').config();
 
-// Get the express package
+// Import the necessary packages (Express, MariaDB)
 const express = require("express");
-
 const mariadb = require("mariadb");
 
+// Create a connection pool to the MariaDB database
 const pool = mariadb.createPool({
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
@@ -12,6 +13,7 @@ const pool = mariadb.createPool({
   database: process.env.DB_DATABASE
 });
 
+// Function to establish a connection to the database
 async function connect() {
   try {
     const conn = await pool.getConnection();
@@ -25,32 +27,33 @@ async function connect() {
 // Instantiate an express (web) app
 const app = express();
 
-// Define a port number for the app to listen on
+// Define the port number for the app to listen on
 const PORT = 3000;
 
-// Tell the app to encode data into JSON format
+// Tell the app to encode data into JSON
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
+// Utilize static files from the "public" directory
 app.use(express.static("public"));
 
-// Set your view (templating) engine to "EJS"
-// (We use a templating engine to create dynamic web pages)
+// Set EJS as the templating engine for rendering views
 app.set("view engine", "ejs");
 
-// Define a "default" route
+// Define the route/default route (home page)
 app.get("/", (req, res) => {
-  // Log message to the server's console
   console.log("Hello, world - server!");
   res.render("home", { data: [], errors: [] });
 });
 
+// Handle form submission from the home page
 app.post("/success", async (req, res) => {
   const data = req.body;
 
   let isValid = true;
   let errors = [];
 
+  // Validate form inputs
   if (data.name.trim() === "") {
     isValid = false;
     errors.push("Please enter your name");
@@ -76,31 +79,37 @@ app.post("/success", async (req, res) => {
     errors.push("Please tell us why you're recommending the movie");
   }
 
+  // If validation fails, render the home page with the errors encountered
   if (!isValid) {
     res.render("home", { data: data, errors: errors });
     return;
   }
-  // Connect to database
+
+  // Connect to the database
   const conn = await connect();
 
-  // Insert order into the database
+  // Insert the new movie recommendation into the database
   await conn.query(
     `INSERT INTO movies (name, movie, genre, rating, why) VALUES ('${data.name}', '${data.movie}', '${data.genre}', ${data.rating}, "${data.why}");`
   );
 
+  // Render the success page with the details
   res.render("success", { details: data });
 });
 
+// Route to view all movie recommendations
 app.get("/all-recommendations", async (req, res) => {
   const conn = await connect();
   const rows = await conn.query("SELECT * FROM movies");
   res.render("all-recommendations", { movies: rows });
 });
 
+// Route for the "lookup" page where users can search for movies
 app.get("/lookup", (req, res) => {
   res.render("lookup", { data: {}, errors: [], results: [] });
 });
 
+// Handle the form submission for movie lookup
 app.post("/lookup", async (req, res) => {
   const data = req.body;
 
@@ -108,6 +117,7 @@ app.post("/lookup", async (req, res) => {
   let errors = [];
   let results = [];
 
+  // Validate input for movie and rating
   if (data.movie && data.movie.trim() === "") {
     isValid = false;
     errors.push("Please enter a movie");
@@ -118,15 +128,18 @@ app.post("/lookup", async (req, res) => {
     errors.push("Please enter a numerical rating from 1-10");
   }
 
+  // If validation fails, render the lookup page with the errors encountered
   if (!isValid) {
     res.render("lookup", { data: data, errors: errors, results: results });
     return;
   }
 
+  // Connecting to the database to run search queries
   const conn = await connect();
 
-  let query = "SELECT * FROM movies WHERE 1=1";
+  let query = "SELECT * FROM movies WHERE 1=1"; // Base query to select all movies
 
+  // Modify query based on user input for movie, genre, and rating
   if (data.movie) {
     query += ` AND movie LIKE '%${data.movie}%'`;
   }
@@ -136,6 +149,8 @@ app.post("/lookup", async (req, res) => {
   if (data.rating) {
     query += ` AND rating >= ${data.rating}`;
   }
+
+  // Modify query based on sorting preference
   if (data.sort === "name") {
     query += " ORDER BY movie ASC";
   } else if (data.sort === "rating") {
@@ -144,18 +159,20 @@ app.post("/lookup", async (req, res) => {
     query += " ORDER BY genre ASC";
   }
 
-  console.log(query);
+  // Execute the query and get the results
   results = await conn.query(query);
 
+  // Render the lookup page with the results
   res.render("lookup", { data: data, errors: errors, results: results });
 });
 
+// Route for the "recommendations" page
 app.get("/recommendations", async (req, res) => {
   const conn = await connect();
   res.render("recommendations");
 })
 
-// Tell the app to listen for requests on the designated port
+// Start the server and listen on the specified port
 app.listen(PORT, () => {
   console.log(`Server running on port http://localhost:${PORT}`);
 });
