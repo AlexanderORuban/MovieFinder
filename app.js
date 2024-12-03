@@ -29,7 +29,8 @@ const app = express();
 const PORT = 3000;
 
 // Tell the app to encode data into JSON format
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
 app.use(express.static("public"));
 
@@ -44,51 +45,100 @@ app.get("/", (req, res) => {
   res.render("home", { data: [], errors: [] });
 });
 
-app.post("/success", async (req, res) => {
+// app.post("/success", async (req, res) => {
+//   const data = req.body;
+
+//   let isValid = true;
+//   let errors = [];
+
+//   if (data.name.trim() === "") {
+//     isValid = false;
+//     errors.push("Please enter your name");
+//   }
+
+//   if (data.movie.trim() === "") {
+//     isValid = false;
+//     errors.push("Please enter a movie");
+//   }
+
+//   if (data.genre.trim() === "") {
+//     isValid = false;
+//     errors.push("Please enter a genre");
+//   }
+
+//   if (data.rating.trim() === "" || isNaN(data.rating) || data.rating > 10 || data.rating < 0) {
+//     isValid = false;
+//     errors.push("Please enter a numerical rating for the movie from 1 - 10");
+//   }
+
+//   if (data.why.trim() === "") {
+//     isValid = false;
+//     errors.push("Please tell us why you're recommending the movie");
+//   }
+
+//   if (!isValid) {
+//     res.render("home", { data: data, errors: errors });
+//     return;
+//   }
+//   // Connect to database
+//   const conn = await connect();
+
+//   // Insert order into the database
+//   await conn.query(
+//     `INSERT INTO movies (name, movie, genre, rating, why) VALUES ('${data.name}', '${data.movie}', '${data.genre}', '${data.rating}', "${data.why}");`
+//   );
+
+//   res.render("success", { details: data });
+// });
+
+app.post("/lookup", async (req, res) => {
   const data = req.body;
 
   let isValid = true;
   let errors = [];
 
-  if (data.name.trim() === "") {
-    isValid = false;
-    errors.push("Please enter your name");
-  }
-
-  if (data.movie.trim() === "") {
+  if (data.movie && data.movie.trim() === "") {
     isValid = false;
     errors.push("Please enter a movie");
   }
 
-  if (data.genre.trim() === "") {
+  if (data.rating && (isNaN(data.rating) || data.rating > 10 || data.rating < 0)) {
     isValid = false;
-    errors.push("Please enter a genre");
-  }
-
-  if (data.rating.trim() === "" || data.rating > 10 || data.rating < 0) {
-    isValid = false;
-    errors.push("Please enter a rating for the movie from 1 - 10");
-  }
-
-  if (data.why.trim() === "") {
-    isValid = false;
-    errors.push("Please tell us why you're recommending the movie");
+    errors.push("Please enter a numerical rating from 1-10");
   }
 
   if (!isValid) {
-    res.render("home", { data: data, errors: errors });
+    res.render("lookup", { data: data, errors: errors, results: [] });
     return;
   }
-  // Connect to database
+
   const conn = await connect();
 
-  // Insert order into the database
-  await conn.query(
-    `INSERT INTO movies (name, movie, genre, rating, why) VALUES ('${data.name}', '${data.movie}', '${data.genre}', '${data.rating}', "${data.why}");`
-  );
+  let query = "SELECT * FROM movies WHERE 1=1";
 
-  res.render("success", { details: data });
+  if (data.movie) {
+    query += ` AND movie LIKE '%${data.movie}%'`;
+  }
+  if (data.genre) {
+    query += ` AND genre LIKE '%${data.genre}%'`;
+  }
+  if (data.rating) {
+    query += ` AND rating >= '${data.rating}'`;
+  }
+  if (data.sort === "name") {
+    query += " ORDER BY movie ASC";
+  } else if (data.sort === "rating") {
+    query += " ORDER BY rating DESC";
+  } else if (data.sort === "genre") {
+    query += " ORDER BY genre ASC";
+  }
+
+  console.log(query);
+  const results = await conn.query(query);
+
+  res.render("lookup", { data: data, errors: errors, results: results });
 });
+
 
 app.get("/all-recommendations", async (req, res) => {
   const conn = await connect();
@@ -97,10 +147,50 @@ app.get("/all-recommendations", async (req, res) => {
 });
 
 app.get("/lookup", async (req, res) => {
+  const data = req.body;
+
+  let isValid = true;
+  let errors = [];
+
+  if (data.movie && data.movie.trim() === "") {
+    isValid = false;
+    errors.push("Please enter a movie");
+  }
+
+  if (data.rating && (isNaN(data.rating) || data.rating > 10 || data.rating < 0)) {
+    isValid = false;
+    errors.push("Please enter a numerical rating from 1-10");
+  }
+
+  if (!isValid) {
+    res.render("lookup", { data: data, errors: errors});
+    return
+  }
 
   const conn = await connect();
 
-  res.render("lookup", {data : data});
+  let query = "SELECT * FROM movies WHERE 1=1";
+
+  if (data.movie) {
+    query += ` AND movie LIKE '${data.movie}'`;
+  }
+  if (data.genre) {
+    query += ` AND genre LIKE '${data.genre}'`;
+  }
+  if (data.rating) {
+    query += ` AND rating >= ${parseFloat(data.rating)}`;
+  }
+  if (data.sort === "name") {
+    query += " ORDER BY movie ASC";
+  } else if (data.sort === "rating") {
+    query += " ORDER BY rating DESC";
+  } else if (data.sort === "genre") {
+    query += " ORDER BY genre ASC";
+  }
+
+  const results = await conn.query(query);
+
+  res.render("lookup", { data: data, errors: errors, results: results });
 });
 
 app.get("/recommendations", async (req, res) => {

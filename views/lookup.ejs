@@ -8,24 +8,24 @@
 </head>
 <body>
     <h1>Lookup a Movie!</h1>
-    <form id="lookup-form" name="lookup-form" action="lookup", method="get">
+    <form id="lookup-form" name="lookup-form" action="lookup" method="POST">
           <label>
             Movie Name
-            <input type="text" id="movie" name="movie"/>
+            <input type="text" id="movie" name="movie" value="<%= data.movie %>"/>
           </label>
           <label>
             Genre
-            <input type="text" id="genre" name="genre"/>
+            <input type="text" id="genre" name="genre" value="<%= data.genre %>"/>
           </label>
           <label>
             Minimum Rating
-            <input type="text" id="min-rating" name="min-rating"/>
+            <input type="text" id="rating" name="rating" value="<%= data.rating%>"/>
           </label>
           <label>
             Sort by
-            <select name="sort" id="sort">
+            <select name="sort" id="sort" value="<%= data.sort %>">
                 <option value="name">Name</option>
-                <option value="min-rating">Rating</option>
+                <option value="rating">Rating</option>
                 <option value="genre">Genre</option>
             </select>
           </label>
@@ -38,7 +38,11 @@
             <% } %>
           <button type="submit" id="submit">Search</button>
     </form>
-
     <h2>Results:</h2>
+    <ul>
+        <% results.forEach(movie => { %>
+          <li><%= movie.movie %> - <%= movie.genre %> - <%= movie.rating %></li>
+        <% }); %>
+      </ul>
 </body>
 </html>
