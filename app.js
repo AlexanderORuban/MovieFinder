@@ -41,7 +41,7 @@ app.set("view engine", "ejs");
 // Define the route/default route (home page)
 app.get("/", (req, res) => {
   console.log("Hello, world - server!");
-  res.render("home", { data: [], errors: [] });
+  res.render("home", { data: {}, errors: [] });
 });
 
 // Handle form submission from the home page
@@ -116,12 +116,12 @@ app.post("/lookup", async (req, res) => {
   let results = [];
 
   // Validate input for movie and rating
-  if (data.movie && data.movie.trim() === "") {
+  if (data.movie.trim() === "") {
     isValid = false;
     errors.push("Please enter a movie");
   }
 
-  if (data.rating && (isNaN(data.rating) || data.rating < 1 || data.rating > 10)) {
+  if (isNaN(data.rating) || data.rating < 1 || data.rating > 10) {
     isValid = false;
     errors.push("Please enter a numerical rating from 1-10");
   }
@@ -173,9 +173,8 @@ app.post("/lookup", async (req, res) => {
 });
 
 // Route for the "recommendations" page
-app.get("/recommendations", async (req, res) => {
-  const conn = await connect();
-  res.render("recommendations");
+app.get("/recommendations", (req, res) => {
+  res.render("recommendations", { data: {}, errors: [], results: [] });
 })
 
 // Start the server and listen on the specified port
