@@ -1,18 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Recommended</title>
-    <link rel="stylesheet" href="styles/success.css" />
-  </head>
-  <body>
-    <div class="container">
-      <h1>You recommended <%= details.movie %> because <%= details.why %></h1>
-      <div class="links">
-        <a href="/">Make another recommendation</a>
-        <a href="/all-recommendations">See all recommendations</a>
-      </div>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Recommended</title>
+  <link rel="stylesheet" href="styles/success.css" />
+</head>
+
+<body>
+  <div class="container">
+    <h1>You recommended <%= details.movie %> because <%= details.why %>
+    </h1>
+    <div class="links">
+      <a href="/">Make another recommendation</a>
+      <a href="/all-recommendations">See all recommendations</a>
     </div>
-  </body>
+  </div>
+</body>
+
 </html>

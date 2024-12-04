@@ -1,60 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Movie Recommendation Website</title>
-    <link rel="stylesheet" href="styles/home.css" />
-  </head>
-  <body>
-    <h1>Recommend a Movie!</h1>
-    <form id="movie-form" name="movie-form" action="success" method="POST">
-      <label>
-        Your name
-        <input type="text" id="name" name="name" value="<%= data.name %>" />
-      </label>
-      <label>
-        Movie Name
-        <input type="text" id="movie" name="movie" value="<%= data.movie %>" />
-      </label>
-      <label>
-        Genre
-        <input type="text" id="genre" name="genre" value="<%= data.genre %>" />
-      </label>
-      <label>
-        What would you rate the movie from 1 - 10?
-        <input
-          type="number"
-          id="rating"
-          name="rating"
-          value="<%= data.rating %>"
-        />
-      </label>
-      <label>
-        Why are you recommending the movie?
-        <textarea
-          name="why"
-          id="why"
-          rows="5"
-          value="<%= data.why %>"
-        ></textarea>
-      </label>
-      <% if (errors) { %>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Movie Recommendation Website</title>
+  <link rel="stylesheet" href="styles/form.css" />
+</head>
+
+<body>
+  <h1>Recommend a Movie!</h1>
+  <form id="movie-form" name="movie-form" action="success" method="POST">
+    <label>
+      Your name
+      <input type="text" id="name" name="name" value="<%= data.name %>" />
+    </label>
+    <label>
+      Movie Name
+      <input type="text" id="movie" name="movie" value="<%= data.movie %>" />
+    </label>
+    <label>
+      Genre
+      <input type="text" id="genre" name="genre" value="<%= data.genre %>" />
+    </label>
+    <label>
+      What would you rate the movie from 1 - 10?
+      <input type="number" id="rating" name="rating" value="<%= data.rating %>" />
+    </label>
+    <label>
+      Why are you recommending the movie?
+      <textarea name="why" id="why" rows="5" value="<%= data.why %>"></textarea>
+    </label>
+    <% if (errors) { %>
       <ul class="errors">
-        <% errors.forEach((error) => { %>
-        <li><%= error %></li>
-        <% }); %>
+        <% errors.forEach((error)=> { %>
+          <li>
+            <%= error %>
+          </li>
+          <% }); %>
       </ul>
       <% } %>
-      <button type="submit" id="submit">Submit Recommendation</button>
-    </form>
-    <div class="links">
-      <a href="/all-recommendations" class="link-btn"> 
-        See all recommendations </a>
-      <a href="/lookup" class="link-btn">
-        Lookup Movies </a>
-      <a href="/recommendations" class="link-btn">
-        Find recommendations </a>
-    </div>
-  </body>
+        <button type="submit" id="submit">Submit Recommendation</button>
+  </form>
+  <div class="links">
+    <a href="/all-recommendations" class="link-btn">
+      See all recommendations </a>
+    <a href="/lookup" class="link-btn">
+      Lookup Movies </a>
+    <a href="/recommendations" class="link-btn">
+      Find recommendations </a>
+  </div>
+</body>
+
 </html>
