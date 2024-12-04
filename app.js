@@ -197,7 +197,7 @@ app.post("/recommendations", async (req, res) => {
 
   if (isNaN(data.quantity) || data.quantity < 1) {
     isValid = false;
-    errors.push("Please enter a number higher than 0");
+    errors.push("Please enter a quantity of 1 or more");
   }
 
   // If validation fails, render the recommendations page with the errors encountered
