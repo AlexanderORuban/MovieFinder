@@ -229,7 +229,7 @@ app.post("/recommendations", async (req, res) => {
       query += " ORDER BY genre ASC";
     }
 
-    // Modify the query based on the number of movies entered
+    // Modify the query based on the quantity of movies
     if(data.quantity) {
       query += ` LIMIT ${data.quantity}`;
     }
