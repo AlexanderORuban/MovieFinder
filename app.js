@@ -175,7 +175,78 @@ app.post("/lookup", async (req, res) => {
 // Route for the "recommendations" page
 app.get("/recommendations", (req, res) => {
   res.render("recommendations", { data: {}, errors: [], results: [] });
-})
+});
+
+app.post("/recommendations", async (req, res) => {
+  const data = req.body;
+
+  let isValid = true;
+  let errors = [];
+  let results = [];
+
+  // Validate input for movie and rating
+  if (data.genre.trim() === "") {
+    isValid = false;
+    errors.push("Please enter a genre");
+  }
+
+  if (isNaN(data.rating) || data.rating < 1 || data.rating > 10) {
+    isValid = false;
+    errors.push("Please enter a minimal numerical rating from 1-10");
+  }
+
+  if (isNaN(data.quantity) || data.quantity < 1) {
+    isValid = false;
+    errors.push("Please enter a number higher than 0");
+  }
+
+  // If validation fails, render the recommendations page with the errors encountered
+  if (!isValid) {
+    res.render("recommendations", { data: data, errors: errors, results: results });
+    return;
+  }
+
+  // Connecting to the database to run search queries
+  const conn = await connect();
+
+  try {
+    let query = "SELECT * FROM movies WHERE 1=1"; // Base query to select all movies
+
+    // Modify query based on user input for genre and rating
+    if (data.genre) {
+      query += ` AND genre LIKE '%${data.genre}%'`;
+    }
+    if (data.rating) {
+      query += ` AND rating >= ${data.rating}`;
+    }
+
+    // Modify query based on sorting preference
+    if (data.sort === "name") {
+      query += " ORDER BY movie ASC";
+    } else if (data.sort === "rating") {
+      query += " ORDER BY rating DESC";
+    } else if (data.sort === "genre") {
+      query += " ORDER BY genre ASC";
+    }
+
+    // Modify the query based on the number of movies entered
+    if(data.quantity) {
+      query += ` LIMIT ${data.quantity}`;
+    }
+
+    // Execute the query and get the results
+    results = await conn.query(query);
+  } catch (err) {
+    // If an error occurs while executing the query, log the error
+    console.error("Error executing query:", err);
+  } finally {
+    // Always release the connection back to the pool after the query is complete
+    conn.release();
+  }
+
+  // Render the recommendations page with the results and any errors
+  res.render("recommendations", { data: data, errors: errors, results: results });
+});
 
 // Start the server and listen on the specified port
 app.listen(process.env.APP_PORT, () => {

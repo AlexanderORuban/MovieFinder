@@ -22,7 +22,7 @@
         </label>
         <label>
             Number of Movies to Recommend
-            <input type="number" id="recommend" name="recommend" value="<%= data.recommend%>" />
+            <input type="number" id="quantity" name="quantity" value="<%= data.quantity%>" />
         </label>
         <label>
             Sort by
@@ -44,6 +44,14 @@
                 <button type="submit" id="submit">Find Recommendations</button>
     </form>
     <h2>Results:</h2>
+    <ul>
+        <!-- Possibly add table for better visual appearance -->
+        <% results.forEach(movie=> { %>
+          <li>
+            <%= movie.movie %> - <%= movie.rating %> - <%= movie.genre %>
+          </li>
+          <% }); %>
+      </ul>
 </body>
 
 </html>
