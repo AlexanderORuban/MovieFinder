@@ -29,7 +29,6 @@
             <select name="sort" id="sort" value="<%= data.sort %>">
                 <option value="name">Name</option>
                 <option value="rating">Rating</option>
-                <option value="genre">Genre</option>
             </select>
         </label>
         <% if (errors) { %>
@@ -43,15 +42,41 @@
             <% } %>
                 <button type="submit" id="submit">Find Recommendations</button>
     </form>
-    <h2>Results:</h2>
-    <ul>
-        <!-- Possibly add table for better visual appearance -->
-        <% results.forEach(movie=> { %>
-          <li>
-            <%= movie.movie %> - <%= movie.rating %> - <%= movie.genre %>
-          </li>
-          <% }); %>
-      </ul>
+    <div class="links">
+        <a href="/all-recommendations" class="link-btn">
+          See All Recommendations </a>
+        <a href="/lookup" class="link-btn">
+            Lookup Movies </a>
+        <a href="/" class="link-btn">
+          Make a Recommendation </a>
+      </div>
+    <% if (results.length> 1) { %>
+        <h2>Results:</h2>
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Movie</th>
+                    <th>Genre</th>
+                    <th>Rating</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% results.forEach(movie=> { %>
+                    <tr>
+                        <td>
+                            <%= movie.movie %>
+                        </td>
+                        <td>
+                            <%= movie.genre %>
+                        </td>
+                        <td>
+                            <%= movie.rating %>
+                        </td>
+                    </tr>
+                    <% }); %>
+            </tbody>
+        </table>
+        <% } %>
 </body>
 
 </html>

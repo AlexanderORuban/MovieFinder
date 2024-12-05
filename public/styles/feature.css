@@ -7,3 +7,44 @@ h2 {
 ul {
     font-size: 1rem;
 }
+
+table {
+    width: 100%;
+    max-width: 500px;
+    border-collapse: collapse;
+    margin-top: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+    background-color: #222;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  
+  thead {
+    background-color: #e50914;
+    color: #fff;
+  }
+  
+  th {
+    padding: 12px 15px;
+    text-align: left;
+    font-weight: bold;
+    font-size: 1rem;
+  }
+  
+  tbody tr {
+    border-bottom: 1px solid #333;
+  }
+  
+  tbody tr:nth-child(even) {
+    background-color: #141414;
+  }
+  
+  td {
+    padding: 12px 15px;
+    font-size: 0.9rem;
+    color: #e5e5e5;
+  }
+  
+  tbody tr:hover {
+    background-color: #333;
+  }
