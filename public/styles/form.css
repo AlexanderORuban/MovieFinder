@@ -130,3 +130,8 @@ button:hover {
   color: red;
   list-style: none;
 }
+
+#customGenre {
+  margin-top: 20px;
+  display: none;
+}

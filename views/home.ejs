@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Movie Recommendation Website</title>
   <link rel="stylesheet" href="styles/form.css" />
+  <script defer src="scripts/home.js"></script>
 </head>
 
 <body>
@@ -21,7 +22,15 @@
     </label>
     <label>
       Genre
-      <input type="text" id="genre" name="genre" value="<%= data.genre %>" />
+      <select type="select" id="genre" name="genre" value="<%= data.genre %>" >
+        <option value="action" <%= data.genre === 'action' ? 'selected' : '' %>>Action</option>
+        <option value="comedy" <%= data.genre === 'comedy' ? 'selected' : '' %>>Comedy</option>
+        <option value="drama" <%= data.genre === 'drama' ? 'selected' : '' %>>Drama</option>
+        <option value="sci-fi" <%= data.genre === 'sci-fi' ? 'selected' : '' %>>Sci-Fi</option>
+        <option value="horror" <%= data.genre === 'horror' ? 'selected' : '' %>>Horror</option>
+        <option value="other" <%= data.genre === 'other' ? 'selected' : '' %>>Other</option>
+      </select>
+      <input type="text" id="customGenre" name="customGenre" placeholder="Enter the genre" value="<%= data.customGenre %>">
     </label>
     <label>
       What would you rate the movie from 1 - 10?

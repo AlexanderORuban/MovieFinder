@@ -67,6 +67,11 @@ app.post("/success", async (req, res) => {
     errors.push("Please enter a genre");
   }
 
+  if (data.genre === "other" && data.customGenre.trim() === "") {
+    isValid = false;
+    errors.push("Please specify a custom genre");
+  }
+
   if (!data.rating || isNaN(data.rating) || data.rating < 1 || data.rating > 10) {
     isValid = false;
     errors.push("Please enter a numerical rating for the movie from 1 - 10");
