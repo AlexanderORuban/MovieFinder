@@ -67,9 +67,14 @@ app.post("/success", async (req, res) => {
     errors.push("Please enter a genre");
   }
 
-  if (data.genre === "other" && data.customGenre.trim() === "") {
-    isValid = false;
-    errors.push("Please specify a custom genre");
+  // Handle custom genre validation
+  if (data.genre === "other") {
+    if (data.customGenre.trim() === "") {
+      isValid = false;
+      errors.push("Please specify a custom genre")
+    } else {
+      data.genre = data.customGenre.trim(); // Replace genre with custom genre
+    }
   }
 
   if (!data.rating || isNaN(data.rating) || data.rating < 1 || data.rating > 10) {
@@ -131,9 +136,14 @@ app.post("/lookup", async (req, res) => {
     errors.push("Please enter a numerical rating from 1-10");
   }
 
-  if (data.genre === "other" && data.customGenre.trim() === "") {
-    isValid = false;
-    errors.push("Please specify a custom genre");
+  // Handle custom genre validation
+  if (data.genre === "other") {
+    if (data.customGenre.trim() === "") {
+      isValid = false;
+      errors.push("Please specify a custom genre")
+    } else {
+      data.genre = data.customGenre.trim(); // Replace genre with custom genre
+    }
   }
 
   // If validation fails, render the lookup page with the errors encountered
@@ -200,9 +210,14 @@ app.post("/recommendations", async (req, res) => {
     errors.push("Please enter a genre");
   }
 
-  if (data.genre === "other" && data.customGenre.trim() === "") {
-    isValid = false;
-    errors.push("Please specify a custom genre");
+  // Handle custom genre validation
+  if (data.genre === "other") {
+    if (data.customGenre.trim() === "") {
+      isValid = false;
+      errors.push("Please specify a custom genre")
+    } else {
+      data.genre = data.customGenre.trim(); // Replace genre with custom genre
+    }
   }
 
   if (isNaN(data.rating) || data.rating < 1 || data.rating > 10) {
