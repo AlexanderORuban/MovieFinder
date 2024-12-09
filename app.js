@@ -74,6 +74,7 @@ app.post("/success", async (req, res) => {
       errors.push("Please specify a custom genre")
     } else {
       data.genre = data.customGenre.trim(); // Replace genre with custom genre
+      data.genre = data.genre.charAt(0).toUpperCase() + data.genre.slice(1); // Capitalize first letter for consistency
     }
   }
 
@@ -260,7 +261,7 @@ app.post("/recommendations", async (req, res) => {
     }
 
     // Modify the query based on the quantity of movies
-    if(data.quantity) {
+    if (data.quantity) {
       query += ` LIMIT ${data.quantity}`;
     }
 
