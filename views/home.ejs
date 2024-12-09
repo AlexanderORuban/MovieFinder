@@ -22,7 +22,7 @@
     </label>
     <label>
       Genre
-      <select type="select" id="genre" name="genre" value="<%= data.genre %>" >
+      <select id="genre" name="genre">
         <option value="action" <%= data.genre === 'action' ? 'selected' : '' %>>Action</option>
         <option value="comedy" <%= data.genre === 'comedy' ? 'selected' : '' %>>Comedy</option>
         <option value="drama" <%= data.genre === 'drama' ? 'selected' : '' %>>Drama</option>
@@ -30,7 +30,7 @@
         <option value="horror" <%= data.genre === 'horror' ? 'selected' : '' %>>Horror</option>
         <option value="other" <%= data.genre === 'other' ? 'selected' : '' %>>Other</option>
       </select>
-      <input type="text" id="customGenre" name="customGenre" placeholder="Enter the genre" value="<%= data.customGenre %>">
+      <input type="text" id="customGenre" name="customGenre" placeholder="Enter the genre" value="<%= data.customGenre || '' %>">
     </label>
     <label>
       What would you rate the movie from 1 - 10?

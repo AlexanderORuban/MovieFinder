@@ -15,7 +15,7 @@
     <form id="recommendations-form" name="recommendations-form" action="recommendations" , method="POST">
         <label>
             Genre
-            <select type="select" id="genre" name="genre" value="<%= data.genre %>">
+            <select id="genre" name="genre">
                 <option value="action" <%=data.genre==='action' ? 'selected' : '' %>>Action</option>
                 <option value="comedy" <%=data.genre==='comedy' ? 'selected' : '' %>>Comedy</option>
                 <option value="drama" <%=data.genre==='drama' ? 'selected' : '' %>>Drama</option>
