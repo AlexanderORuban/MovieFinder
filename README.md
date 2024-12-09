@@ -4,6 +4,10 @@
 
 MovieFinder is a simple yet helpful application that allows you to organize movies by genre and rating, store them in a database, and receive personalized recommendations based on your search results.
 
+## Live Application
+
+You can view the running application at [MovieFinder](http://aruban.greenriverdev.com/).
+
 ## Features
 
 - **Submit Movie Recommendations:** Users can submit their favorite movies, which will be added to the database.
@@ -80,7 +84,7 @@ MovieFinder is a simple yet helpful application that allows you to organize movi
   - Ensured proper querying and data manipulation for storing and retrieving movie recommendations and search requests.
 
 - **Deployment & Testing:**
-  - Deployed the application on a local server and conducted smooth testing of functionality.
+  - Deployed the application on both a local and digital server and conducted testing of functionality. 
   - Inserted additional test data into the database script for better testing coverage.
 
 ### Felix Chen
