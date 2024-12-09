@@ -5,7 +5,7 @@ const customGenreInput = document.getElementById("customGenre");
 // Check the initial value of the genre dropdown
 if (genreDropdown.value === "other") {
     // If the selected value is "other", display the custom genre text box
-    customGenreInput.display = "block";
+    customGenreInput.style.display = "block";
 } else {
     // Otherwise, hide the custom genre text box
     customGenreInput.style.display = "none";
