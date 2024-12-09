@@ -7,6 +7,7 @@
     <title>Recommendations</title>
     <link rel="stylesheet" href="styles/form.css">
     <link rel="stylesheet" href="styles/feature.css">
+    <script defer src="scripts/select.js"></script>
 </head>
 
 <body>
@@ -14,7 +15,16 @@
     <form id="recommendations-form" name="recommendations-form" action="recommendations" , method="POST">
         <label>
             Genre
-            <input type="text" id="genre" name="genre" value="<%= data.genre %>" />
+            <select type="select" id="genre" name="genre" value="<%= data.genre %>">
+                <option value="action" <%=data.genre==='action' ? 'selected' : '' %>>Action</option>
+                <option value="comedy" <%=data.genre==='comedy' ? 'selected' : '' %>>Comedy</option>
+                <option value="drama" <%=data.genre==='drama' ? 'selected' : '' %>>Drama</option>
+                <option value="sci-fi" <%=data.genre==='sci-fi' ? 'selected' : '' %>>Sci-Fi</option>
+                <option value="horror" <%=data.genre==='horror' ? 'selected' : '' %>>Horror</option>
+                <option value="other" <%=data.genre==='other' ? 'selected' : '' %>>Other</option>
+            </select>
+            <input type="text" id="customGenre" name="customGenre" placeholder="Enter the genre"
+                value="<%= data.customGenre %>">
         </label>
         <label>
             Minimum Rating
@@ -44,12 +54,12 @@
     </form>
     <div class="links">
         <a href="/all-recommendations" class="link-btn">
-          See All Recommendations </a>
+            See All Recommendations </a>
         <a href="/lookup" class="link-btn">
             Lookup Movies </a>
         <a href="/" class="link-btn">
-          Make a Recommendation </a>
-      </div>
+            Make a Recommendation </a>
+    </div>
     <% if (results.length> 1) { %>
         <h2>Results:</h2>
         <table border="1">
