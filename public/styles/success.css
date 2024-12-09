@@ -81,4 +81,10 @@ h1 span {
     font-size: 0.8rem;
     margin: 5px 10px;
   }
+
+  .links {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
 }

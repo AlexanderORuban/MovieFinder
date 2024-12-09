@@ -124,6 +124,11 @@ button:hover {
   .recommendations-btn {
     padding: 10px;
   }
+
+  .links {
+    display: flex;
+    flex-direction: column;
+  }
 }
 
 .errors {
